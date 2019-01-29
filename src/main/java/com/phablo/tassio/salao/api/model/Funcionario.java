@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "funcionario")
@@ -14,7 +15,12 @@ public class Funcionario {
 
     private Long id;
     private Pessoa pessoa;
-    private String cargo;
+    private Cargo cargo;
+    private LocalDate dataAdmissao;
+
+    Funcionario () {
+        this.dataAdmissao = LocalDate.now();
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,21 +32,33 @@ public class Funcionario {
         this.id = id;
     }
 
-    @OneToOne(mappedBy = "funcionario")
+    @OneToOne(mappedBy = "funcionario", cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_pessoa")
     public Pessoa getPessoa() {
         return pessoa;
     }
 
     public void setPessoa(Pessoa pessoa) {
         this.pessoa = pessoa;
+
     }
 
-    public String getCargo() {
+    @Enumerated(value = EnumType.STRING )
+    public Cargo getCargo() {
         return cargo;
     }
 
-    public void setCargo(String cargo) {
+    public void setCargo(Cargo cargo) {
         this.cargo = cargo;
+    }
+
+    @Column(name = "data_admissao")
+    public LocalDate getDataAdmissao() {
+        return dataAdmissao;
+    }
+
+    public void setDataAdmissao(LocalDate dataAdmissao) {
+        this.dataAdmissao = dataAdmissao;
     }
 
     @Override

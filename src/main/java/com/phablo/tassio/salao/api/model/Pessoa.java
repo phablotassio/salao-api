@@ -72,12 +72,13 @@ public class Pessoa {
         this.endereco = endereco;
     }
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn( name = "id_funcionario")
+    @JoinColumn( unique = true ,name = "id_funcionario")
     public Funcionario getFuncionario() {
         return funcionario;
     }
 
     public void setFuncionario(Funcionario funcionario) {
+        funcionario.setPessoa(this);
         this.funcionario = funcionario;
     }
 
