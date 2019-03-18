@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -17,7 +18,7 @@ public class PessoaController {
     private PessoaService pessoaService;
 
     @PostMapping
-    public ResponseEntity<Pessoa> cadastrarPessoa (@RequestBody Pessoa pessoa) {
+    public ResponseEntity<Pessoa> cadastrarPessoa (@Valid @RequestBody Pessoa pessoa) {
         return pessoaService.cadastrarPessoa(pessoa);
     }
 

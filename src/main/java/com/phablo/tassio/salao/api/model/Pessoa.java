@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "pessoa")
@@ -30,6 +32,8 @@ public class Pessoa {
         this.id = id;
     }
 
+    @NotBlank
+    @Size(min = 3, max = 35)
     public String getNome() {
         return nome;
     }
