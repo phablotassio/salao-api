@@ -17,6 +17,10 @@ public class PessoaController {
     @Autowired
     private PessoaService pessoaService;
 
+    public PessoaController(PessoaService pessoaService) {
+        this.pessoaService = pessoaService;
+    }
+
     @PostMapping
     public ResponseEntity<Pessoa> cadastrarPessoa (@Valid @RequestBody Pessoa pessoa) {
         return pessoaService.cadastrarPessoa(pessoa);
