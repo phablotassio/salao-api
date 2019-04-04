@@ -18,6 +18,14 @@ public class PessoaService {
     @Autowired
     private PessoaRepository pessoaRepository;
 
+    public PessoaService() {
+
+    }
+
+    public PessoaService(PessoaRepository pessoaRepository) {
+        this.pessoaRepository = pessoaRepository;
+    }
+
     public ResponseEntity<Pessoa> cadastrarPessoa(Pessoa pessoa){
 
         Pessoa pessoaSalva = pessoaRepository.save(pessoa);
