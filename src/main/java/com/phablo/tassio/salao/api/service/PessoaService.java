@@ -9,16 +9,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.xml.ws.Response;
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class PessoaService {
 
     @Autowired
     private PessoaRepository pessoaRepository;
+
+    public PessoaService() {
+
+    }
+
+    public PessoaService(PessoaRepository pessoaRepository) {
+        this.pessoaRepository = pessoaRepository;
+    }
 
     public ResponseEntity<Pessoa> cadastrarPessoa(Pessoa pessoa){
 
@@ -53,13 +59,7 @@ public class PessoaService {
 
     private Pessoa getPessoaPorId(Long id) {
 
-        Optional<Pessoa> pessoaSalva = pessoaRepository.findById(id);
+      return pessoaRepository.findById(id).orElseThrow(() -> new EmptyResultDataAccessException("A pessoa procurada não está cadastrada.", 1));
 
-        if(pessoaSalva.isPresent()) {
-
-            return pessoaSalva.get();
-        }
-
-        throw new EmptyResultDataAccessException("A pessoa procurada não está cadastrada.", 1);
     }
 }
