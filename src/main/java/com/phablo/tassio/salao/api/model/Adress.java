@@ -4,12 +4,16 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "endereco")
-public class Endereco {
+public class Adress {
 
     private Long id;
     private String cep;
     private String cidade;
     private String descricao;
+    private String logradouro;
+    private String bairro;
+    private String complemento;
+    private Integer numero;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,12 +49,44 @@ public class Endereco {
         this.descricao = descricao;
     }
 
+    public String getLogradouro() {
+        return logradouro;
+    }
+
+    public void setLogradouro(String logradouro) {
+        this.logradouro = logradouro;
+    }
+
+    public String getBairro() {
+        return bairro;
+    }
+
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
+    }
+
+    public String getComplemento() {
+        return complemento;
+    }
+
+    public void setComplemento(String complemento) {
+        this.complemento = complemento;
+    }
+
+    public Integer getNumero() {
+        return numero;
+    }
+
+    public void setNumero(Integer numero) {
+        this.numero = numero;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Endereco endereco = (Endereco) o;
+        Adress endereco = (Adress) o;
 
         return getId().equals(endereco.getId());
     }

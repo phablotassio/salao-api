@@ -1,7 +1,9 @@
 package com.phablo.tassio.salao.api.controller;
 
-import com.phablo.tassio.salao.api.model.Pessoa;
-import com.phablo.tassio.salao.api.service.PessoaService;
+import com.phablo.tassio.salao.api.model.Person;
+import com.phablo.tassio.salao.api.model.dto.PersonDTO;
+import com.phablo.tassio.salao.api.model.interfaces.ApplicationDTO;
+import com.phablo.tassio.salao.api.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,31 +13,30 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/salao/pessoa")
-public class PessoaController {
+@RequestMapping("/api/person")
+public class PersonController {
 
     @Autowired
-    private PessoaService pessoaService;
+    private PersonService pessoaService;
 
-    public PessoaController(PessoaService pessoaService) {
+    public PersonController(PersonService pessoaService) {
         this.pessoaService = pessoaService;
     }
 
     @PostMapping
-    public ResponseEntity<Pessoa> cadastrarPessoa (@Valid @RequestBody Pessoa pessoa) {
-        return pessoaService.cadastrarPessoa(pessoa);
+    public ResponseEntity<ApplicationDTO> cadastrarPessoa (@Valid @RequestBody PersonDTO personDTO) {
+        return pessoaService.cadastrarPessoa(personDTO);
     }
 
     @GetMapping
-    public ResponseEntity<List<Pessoa>> listarPessoas() {
+    public ResponseEntity<List<ApplicationDTO>> listarPessoas() {
         return pessoaService.listarPessoas();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Pessoa> buscarPessoaPorId(@PathVariable Long id) {
+    public ResponseEntity<ApplicationDTO> buscarPessoaPorId(@PathVariable Long id) {
         return pessoaService.buscarporId(id);
     }
-
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -44,7 +45,7 @@ public class PessoaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Pessoa> atualizarPessoa(@PathVariable Long id, @RequestBody Pessoa pessoa) {
+    public ResponseEntity<ApplicationDTO> atualizarPessoa(@PathVariable Long id, @RequestBody Person pessoa) {
         return pessoaService.atualizarPEssoa(id, pessoa);
     }
 
