@@ -9,7 +9,7 @@ import java.util.List;
 public class Cliente {
 
     private Long id;
-    private Pessoa pessoa;
+    private Person pessoa;
     private LocalDate dataCadastro;
     private List<Servico> servicosFeitos;
 
@@ -23,11 +23,11 @@ public class Cliente {
         this.id = id;
     }
 
-    public Pessoa getPessoa() {
+    public Person getPessoa() {
         return pessoa;
     }
 
-    public void setPessoa(Pessoa pessoa) {
+    public void setPessoa(Person pessoa) {
         this.pessoa = pessoa;
     }
 

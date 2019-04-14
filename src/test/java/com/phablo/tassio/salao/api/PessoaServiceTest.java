@@ -1,8 +1,9 @@
 package com.phablo.tassio.salao.api;
 
-import com.phablo.tassio.salao.api.model.Pessoa;
+import com.phablo.tassio.salao.api.model.Person;
+import com.phablo.tassio.salao.api.model.dto.PersonDTO;
 import com.phablo.tassio.salao.api.repository.PessoaRepository;
-import com.phablo.tassio.salao.api.service.PessoaService;
+import com.phablo.tassio.salao.api.service.PersonService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,13 +34,14 @@ public class PessoaServiceTest {
     public void cadastrarPessoa() {
 
         PessoaRepository pessoaRepositoryMock = Mockito.mock(PessoaRepository.class);
-        Pessoa pessoaMock = Mockito.mock(Pessoa.class);
+        Person pessoaMock = Mockito.mock(Person.class);
+        PersonDTO personDTOMock = Mockito.mock(PersonDTO.class);
 
-        PessoaService pessoaService = new PessoaService(pessoaRepositoryMock);
+        PersonService pessoaService = new PersonService(pessoaRepositoryMock);
 
         Mockito.when(pessoaMock.getId()).thenReturn(1l);
         Mockito.when(pessoaRepositoryMock.save(pessoaMock)).thenReturn(pessoaMock);
-        pessoaService.cadastrarPessoa(pessoaMock);
+        pessoaService.cadastrarPessoa(personDTOMock);
         Mockito.verify(pessoaRepositoryMock, Mockito.times(1)).save(pessoaMock);
         Mockito.verify(pessoaMock, Mockito.times(1)).getId();
 
@@ -49,8 +51,8 @@ public class PessoaServiceTest {
     public void listarPessoas() {
 
         PessoaRepository pessoaRepositoryMock = Mockito.mock(PessoaRepository.class);
-        PessoaService pessoaService = new PessoaService(pessoaRepositoryMock);
-        List<Pessoa> pessoas = new ArrayList<>();
+        PersonService pessoaService = new PersonService(pessoaRepositoryMock);
+        List<Person> pessoas = new ArrayList<>();
 
         Mockito.when(pessoaRepositoryMock.findAll()).thenReturn(pessoas);
         pessoaService.listarPessoas();

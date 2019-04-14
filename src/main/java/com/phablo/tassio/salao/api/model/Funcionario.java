@@ -6,15 +6,15 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import javax.persistence.*;
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "funcionario")
+//@Entity
+//@Table(name = "funcionario")
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id")
 public class Funcionario {
 
     private Long id;
-    private Pessoa pessoa;
+    private Person pessoa;
     private Cargo cargo;
     private LocalDate dataAdmissao;
 
@@ -34,11 +34,11 @@ public class Funcionario {
 
     @OneToOne(mappedBy = "funcionario", cascade = CascadeType.ALL)
     @JoinColumn(name = "id_pessoa")
-    public Pessoa getPessoa() {
+    public Person getPessoa() {
         return pessoa;
     }
 
-    public void setPessoa(Pessoa pessoa) {
+    public void setPessoa(Person pessoa) {
         this.pessoa = pessoa;
 
     }
