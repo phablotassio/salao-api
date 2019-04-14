@@ -2,7 +2,6 @@ package com.phablo.tassio.salao.api.controller;
 
 import com.phablo.tassio.salao.api.model.Person;
 import com.phablo.tassio.salao.api.model.dto.PersonDTO;
-import com.phablo.tassio.salao.api.model.interfaces.ApplicationDTO;
 import com.phablo.tassio.salao.api.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,17 +23,17 @@ public class PersonController {
     }
 
     @PostMapping
-    public ResponseEntity<ApplicationDTO> cadastrarPessoa (@Valid @RequestBody PersonDTO personDTO) {
+    public ResponseEntity<PersonDTO> cadastrarPessoa (@Valid @RequestBody PersonDTO personDTO) {
         return pessoaService.cadastrarPessoa(personDTO);
     }
 
     @GetMapping
-    public ResponseEntity<List<ApplicationDTO>> listarPessoas() {
+    public ResponseEntity<List<PersonDTO>> listarPessoas() {
         return pessoaService.listarPessoas();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApplicationDTO> buscarPessoaPorId(@PathVariable Long id) {
+    public ResponseEntity<PersonDTO> buscarPessoaPorId(@PathVariable Long id) {
         return pessoaService.buscarporId(id);
     }
 
@@ -45,7 +44,7 @@ public class PersonController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApplicationDTO> atualizarPessoa(@PathVariable Long id, @RequestBody Person pessoa) {
+    public ResponseEntity<PersonDTO> atualizarPessoa(@PathVariable Long id, @RequestBody Person pessoa) {
         return pessoaService.atualizarPEssoa(id, pessoa);
     }
 

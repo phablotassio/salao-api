@@ -2,8 +2,7 @@ package com.phablo.tassio.salao.api.service;
 
 import com.phablo.tassio.salao.api.model.Person;
 import com.phablo.tassio.salao.api.model.dto.PersonDTO;
-import com.phablo.tassio.salao.api.model.interfaces.ManagerDTO;
-import com.phablo.tassio.salao.api.model.interfaces.ApplicationDTO;
+import com.phablo.tassio.salao.api.model.mapper.PersonMapper;
 import com.phablo.tassio.salao.api.repository.PessoaRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +16,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class PersonService implements ManagerDTO<Person, Long> {
+public class PersonService {
 
     @Autowired
     private PessoaRepository pessoaRepository;
+
+    @Autowired
+    private PersonMapper personMapper;
 
     public PersonService() {
 
@@ -30,16 +32,16 @@ public class PersonService implements ManagerDTO<Person, Long> {
         this.pessoaRepository = pessoaRepository;
     }
 
-    public ResponseEntity<ApplicationDTO> cadastrarPessoa(PersonDTO personDTO){
+    public ResponseEntity<PersonDTO> cadastrarPessoa(PersonDTO personDTO){
 
-        Person pessoaSalva = pessoaRepository.save(convertToEntity(personDTO));
+        Person pessoaSalva = pessoaRepository.save(personMapper.personDTOToPerson(personDTO));
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(pessoaSalva.getId()).toUri();
 
-        return ResponseEntity.created(uri).body(convertToDTO(pessoaSalva));
+        return ResponseEntity.created(uri).body(personMapper.personToPersonDto(pessoaSalva));
     }
 
-    public ResponseEntity<List<ApplicationDTO>> listarPessoas() {
-        return ResponseEntity.ok(pessoaRepository.findAll().stream().map(person -> convertToDTO(person)).collect(Collectors.toList()));
+    public ResponseEntity<List<PersonDTO>> listarPessoas() {
+        return ResponseEntity.ok(pessoaRepository.findAll().stream().map(person -> personMapper.personToPersonDto(person)).collect(Collectors.toList()));
     }
 
 
@@ -48,17 +50,17 @@ public class PersonService implements ManagerDTO<Person, Long> {
         pessoaRepository.deleteById(id);
     }
 
-    public ResponseEntity<ApplicationDTO> atualizarPEssoa(Long id, Person pessoa) {
+    public ResponseEntity<PersonDTO> atualizarPEssoa(Long id, Person pessoa) {
 
         Person pessoaSalva = getPessoaPorId(id);
         BeanUtils.copyProperties(pessoa,pessoaSalva, "id");
 
-        return ResponseEntity.ok(convertToDTO(pessoaRepository.save(pessoaSalva)));
+        return ResponseEntity.ok(personMapper.personToPersonDto(pessoaRepository.save(pessoaSalva)));
     }
 
-    public ResponseEntity<ApplicationDTO> buscarporId(Long id) {
+    public ResponseEntity<PersonDTO> buscarporId(Long id) {
 
-        return ResponseEntity.ok(convertToDTO(getPessoaPorId(id)));
+        return ResponseEntity.ok(personMapper.personToPersonDto(getPessoaPorId(id)));
     }
 
     private Person getPessoaPorId(Long id) {
@@ -67,17 +69,4 @@ public class PersonService implements ManagerDTO<Person, Long> {
 
     }
 
-    @Override
-    public ApplicationDTO convertToDTO(Person clazz) {
-        PersonDTO personDTO = new PersonDTO();
-        BeanUtils.copyProperties(clazz, personDTO, "id");
-        return personDTO;
-    }
-
-    @Override
-    public Person convertToEntity(ApplicationDTO simpleDTO) {
-        Person  person = new Person();
-        BeanUtils.copyProperties(simpleDTO, person, "id");
-        return person;
-    }
 }

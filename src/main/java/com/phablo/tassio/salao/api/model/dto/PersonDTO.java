@@ -1,10 +1,8 @@
 package com.phablo.tassio.salao.api.model.dto;
 
-import com.phablo.tassio.salao.api.model.interfaces.ApplicationDTO;
-
 import java.time.LocalDate;
 
-public class PersonDTO implements ApplicationDTO {
+public class PersonDTO {
 
     private String fullName;
     private String documentNumber;
