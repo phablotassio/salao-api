@@ -1,9 +1,10 @@
 package com.phablo.tassio.salao.api.service;
 
+import com.phablo.tassio.salao.api.model.FisicPerson;
 import com.phablo.tassio.salao.api.model.Person;
-import com.phablo.tassio.salao.api.model.dto.PersonDTO;
-import com.phablo.tassio.salao.api.model.mapper.PersonMapper;
-import com.phablo.tassio.salao.api.repository.PessoaRepository;
+import com.phablo.tassio.salao.api.model.dto.FisicPersonDTO;
+import com.phablo.tassio.salao.api.model.mapper.FisicPersonMapper;
+import com.phablo.tassio.salao.api.repository.FisicPersonRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -16,31 +17,25 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class PersonService {
+public class FisicPersonService {
 
     @Autowired
-    private PessoaRepository pessoaRepository;
+    private FisicPersonRepository pessoaRepository;
 
     @Autowired
-    private PersonMapper personMapper;
+    private FisicPersonMapper personMapper;
 
-    public PersonService() {
+    public ResponseEntity<FisicPersonDTO> cadastrarPessoa(FisicPersonDTO personDTO){
 
-    }
+        FisicPerson fisicPerson = personMapper.personDTOToFisicPerson(personDTO);
 
-    public PersonService(PessoaRepository pessoaRepository) {
-        this.pessoaRepository = pessoaRepository;
-    }
-
-    public ResponseEntity<PersonDTO> cadastrarPessoa(PersonDTO personDTO){
-
-        Person pessoaSalva = pessoaRepository.save(personMapper.personDTOToPerson(personDTO));
+        FisicPerson pessoaSalva = pessoaRepository.save(fisicPerson);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(pessoaSalva.getId()).toUri();
 
         return ResponseEntity.created(uri).body(personMapper.personToPersonDto(pessoaSalva));
     }
 
-    public ResponseEntity<List<PersonDTO>> listarPessoas() {
+    public ResponseEntity<List<FisicPersonDTO>> listarPessoas() {
         return ResponseEntity.ok(pessoaRepository.findAll().stream().map(person -> personMapper.personToPersonDto(person)).collect(Collectors.toList()));
     }
 
@@ -50,20 +45,20 @@ public class PersonService {
         pessoaRepository.deleteById(id);
     }
 
-    public ResponseEntity<PersonDTO> atualizarPEssoa(Long id, Person pessoa) {
+    public ResponseEntity<FisicPersonDTO> atualizarPEssoa(Long id, Person pessoa) {
 
-        Person pessoaSalva = getPessoaPorId(id);
+        FisicPerson pessoaSalva = getPessoaPorId(id);
         BeanUtils.copyProperties(pessoa,pessoaSalva, "id");
 
         return ResponseEntity.ok(personMapper.personToPersonDto(pessoaRepository.save(pessoaSalva)));
     }
 
-    public ResponseEntity<PersonDTO> buscarporId(Long id) {
+    public ResponseEntity<FisicPersonDTO> buscarporId(Long id) {
 
         return ResponseEntity.ok(personMapper.personToPersonDto(getPessoaPorId(id)));
     }
 
-    private Person getPessoaPorId(Long id) {
+    private FisicPerson getPessoaPorId(Long id) {
 
       return pessoaRepository.findById(id).orElseThrow(() -> new EmptyResultDataAccessException("A pessoa procurada não está cadastrada.", 1));
 

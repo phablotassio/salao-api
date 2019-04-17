@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -17,36 +17,37 @@ import java.time.LocalDate;
 public class Person implements Serializable {
 
     private static final long serialVersionUID = -1188976483534062381L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String fullName;
+
+    @NotNull
+    @Size(max = 14)
+    @Column(name = "document_number", unique = true)
     private String documentNumber;
+
+    @NotNull
+    @Size(max = 18)
+    @Column(name = "telephone_number")
     private String telephoneNumber;
+
+    @Size(max = 100)
     private String email;
+    @NotNull
+    @Column(name = "inclusion_date", updatable = false)
     private LocalDate inclusionDate;
 
     public Person() {
         this.inclusionDate = LocalDate.now();
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    @NotBlank
-    @Size(min = 3, max = 100)
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
     }
 
     public String getDocumentNumber() {
