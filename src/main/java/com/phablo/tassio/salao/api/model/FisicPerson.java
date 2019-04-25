@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "fisic_person")
+@Table(name = "TB_FISIC_PERSON")
 public class FisicPerson implements Serializable {
 
     private static final long serialVersionUID = 5748570390671813955L;
@@ -19,15 +19,19 @@ public class FisicPerson implements Serializable {
     private Long id;
 
     @NotNull
-    private LocalDate dateBirth;
+    @Column(name = "BIRTH_DATE")
+    private LocalDate birthdate;
 
     @NotBlank
+    @Column(name = "FULL_NAME")
     @Size(max =  100)
     private String fullName;
 
+    @Column(name = "NICK_NAME")
     @Size(max =  30)
     private String nickName;
 
+    @Column(name = "SEX_TYPE")
     @NotNull
     @Enumerated(EnumType.STRING)
     private SexType sexType;
@@ -35,8 +39,8 @@ public class FisicPerson implements Serializable {
     @MapsId
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_person",
-            foreignKey = @ForeignKey(name = "fisic_person_ibfk_1"))
+    @JoinColumn(name = "ID_FISIC_PERSON",
+            foreignKey = @ForeignKey(name = "FK_PERSON_TB_FISIC_PERSON"))
     private Person person;
 
     public Long getId() {
@@ -47,12 +51,12 @@ public class FisicPerson implements Serializable {
         this.id = id;
     }
 
-    public LocalDate getDateBirth() {
-        return dateBirth;
+    public LocalDate getBirthdate() {
+        return birthdate;
     }
 
-    public void setDateBirth(LocalDate dateBirth) {
-        this.dateBirth = dateBirth;
+    public void setBirthdate(LocalDate birthdate) {
+        this.birthdate = birthdate;
     }
 
     public String getFullName() {

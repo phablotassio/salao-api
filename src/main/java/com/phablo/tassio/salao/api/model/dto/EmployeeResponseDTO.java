@@ -4,15 +4,19 @@ import com.phablo.tassio.salao.api.model.enums.SexType;
 
 import java.time.LocalDate;
 
-public class FisicPersonDTO {
+public class EmployeeResponseDTO {
 
     private String fullName;
     private String documentNumber;
     private String telephoneNumber;
     private String email;
-    private LocalDate dateBirth;
+    private LocalDate birthdate;
     private String nickName;
     private SexType sexType;
+    private LocalDate admissionDate;
+    private LocalDate withdrawDate;
+    private String nameJuridicalPerson;
+    private String nameRole;
 
     public String getFullName() {
         return fullName;
@@ -46,12 +50,12 @@ public class FisicPersonDTO {
         this.email = email;
     }
 
-    public LocalDate getDateBirth() {
-        return dateBirth;
+    public LocalDate getBirthdate() {
+        return birthdate;
     }
 
-    public void setDateBirth(LocalDate dateBirth) {
-        this.dateBirth = dateBirth;
+    public void setBirthdate(LocalDate birthdate) {
+        this.birthdate = birthdate;
     }
 
     public String getNickName() {
@@ -68,5 +72,37 @@ public class FisicPersonDTO {
 
     public void setSexType(SexType sexType) {
         this.sexType = sexType;
+    }
+
+    public LocalDate getAdmissionDate() {
+        return admissionDate;
+    }
+
+    public void setAdmissionDate(LocalDate admissionDate) {
+        this.admissionDate = admissionDate;
+    }
+
+    public LocalDate getWithdrawDate() {
+        return withdrawDate;
+    }
+
+    public void setWithdrawDate(LocalDate withdrawDate) {
+        this.withdrawDate = withdrawDate;
+    }
+
+    public String getNameJuridicalPerson() {
+        return nameJuridicalPerson;
+    }
+
+    public void setNameJuridicalPerson(String nameJuridicalPerson) {
+        this.nameJuridicalPerson = nameJuridicalPerson;
+    }
+
+    public String getNameRole() {
+        return nameRole;
+    }
+
+    public void setNameRole(String nameRole) {
+        this.nameRole = nameRole;
     }
 }

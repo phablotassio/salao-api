@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "person")
+@Table(name = "TB_PERSON")
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id")
@@ -19,23 +19,26 @@ public class Person implements Serializable {
     private static final long serialVersionUID = -1188976483534062381L;
 
     @Id
+    @Column(name = "ID_PERSON")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
     @Size(max = 14)
-    @Column(name = "document_number", unique = true)
+    @Column(name = "DOCUMENT_NUMBER", unique = true)
     private String documentNumber;
 
     @NotNull
     @Size(max = 18)
-    @Column(name = "telephone_number")
+    @Column(name = "TELEPHONE_NUMBER")
     private String telephoneNumber;
 
     @Size(max = 100)
+    @Column(name = "EMAIL")
     private String email;
+
     @NotNull
-    @Column(name = "inclusion_date", updatable = false)
+    @Column(name = "INCLUSION_DATE", updatable = false)
     private LocalDate inclusionDate;
 
     public Person() {

@@ -1,7 +1,5 @@
 package com.phablo.tassio.salao.api.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.time.LocalDate;
 
 //@Entity
@@ -9,7 +7,7 @@ import java.time.LocalDate;
 public class Servico {
 
     private String servico;
-    private Funcionario funcionario;
+    private Employee funcionario;
     private LocalDate dataServico;
     private Cliente cliente;
 }
