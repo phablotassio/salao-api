@@ -13,6 +13,6 @@ public class RoleService {
     private RoleRepository repository;
 
     public Role findById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new EmptyResultDataAccessException("Role nao encotrada",1));
+        return repository.findById(id).orElseThrow(() -> new EmptyResultDataAccessException("Role nao encotrada", 1));
     }
 }

@@ -26,7 +26,7 @@ public class PersonController {
     }
 
     @PostMapping
-    public ResponseEntity<EmployeeResponseDTO> cadastrarPessoa (@Valid @RequestBody EmployeeRequestDTO personDTO) {
+    public ResponseEntity<EmployeeResponseDTO> cadastrarPessoa(@Valid @RequestBody EmployeeRequestDTO personDTO) {
         return pessoaService.cadastrarPessoa(personDTO);
     }
 

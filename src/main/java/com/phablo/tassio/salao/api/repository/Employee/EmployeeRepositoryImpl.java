@@ -2,6 +2,7 @@ package com.phablo.tassio.salao.api.repository.Employee;
 
 import com.phablo.tassio.salao.api.model.*;
 import com.phablo.tassio.salao.api.model.Filter.EmployeeFilter;
+import com.phablo.tassio.salao.api.utils.RepositoryUtils;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
@@ -13,7 +14,7 @@ import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EmployeeRepositoryImpl implements EmployeeRepositoryQuerry {
+public class EmployeeRepositoryImpl implements EmployeeRepositoryQuery {
 
     @PersistenceContext
     private EntityManager manager;
@@ -26,24 +27,25 @@ public class EmployeeRepositoryImpl implements EmployeeRepositoryQuerry {
         Root<Employee> root = criteriaQuery.from(Employee.class);
 
         Fetch<Employee, FisicPerson> fisicPersonFetch = root.fetch("fisicPerson", JoinType.LEFT);
+        Fetch<Employee, GroupPerson> groupPersonFetch = root.fetch("groupPerson");
         Join<Employee, FisicPerson> fisicPersonJoin = (Join<Employee, FisicPerson>) fisicPersonFetch;
 
-        fisicPersonJoin.fetch("person",JoinType.LEFT);
+        fisicPersonJoin.fetch("person", JoinType.LEFT);
         Fetch<Employee, Role> role = root.fetch("role", JoinType.LEFT);
         Fetch<Employee, JuridicalPerson> juridicalPersonFetch = root.fetch("juridicalPerson", JoinType.INNER);
 
-        Join<Employee, FisicPerson> join = (Join<Employee, FisicPerson>) fisicPersonFetch;
 
-        Predicate[] predicates = createPredicates(builder, employeeFilter, root, join);
+        Predicate[] predicates = createPredicates(builder, employeeFilter, root, fisicPersonJoin);
         criteriaQuery.where(predicates);
+        RepositoryUtils.addOrdination(pageable, builder, criteriaQuery, root);
         TypedQuery<Employee> query = manager.createQuery(criteriaQuery);
-        addOrdenation(query, pageable);
+        RepositoryUtils.addPagination(query, pageable);
 
         return new PageImpl<>(query.getResultList()).getContent();
     }
 
     private Predicate[] createPredicates(CriteriaBuilder builder, EmployeeFilter employeeFilter,
-                                         Root<Employee> root, Join<Employee, FisicPerson> join) {
+                                         Root<Employee> root, Join<Employee, FisicPerson> fisicPersonJoin) {
 
         List<Predicate> predicates = new ArrayList<>();
 
@@ -52,24 +54,14 @@ public class EmployeeRepositoryImpl implements EmployeeRepositoryQuerry {
                     employeeFilter.getAdmissionDate()));
         }
 
-        if(!StringUtils.isEmpty(employeeFilter.getFullName())){
-            predicates.add(builder.like(builder.lower(join.get("fullName")), "%" + employeeFilter.getFullName().toLowerCase() + "%"));
+        if (!StringUtils.isEmpty(employeeFilter.getFullName())) {
+            predicates.add(builder.like(builder.lower(fisicPersonJoin.get("fullName")), "%" + employeeFilter.getFullName().toLowerCase() + "%"));
+        }
+
+        if (employeeFilter.getIdGroupPerson() != null) {
+            predicates.add(builder.equal(root.get("groupPerson"), employeeFilter.getIdGroupPerson()));
         }
 
         return predicates.toArray(new Predicate[predicates.size()]);
-
     }
-
-    private void addOrdenation(TypedQuery<Employee> query, Pageable pageable) {
-
-        int paaginaAtual = pageable.getPageNumber();
-        int totalRegistrosPogPagina = pageable.getPageSize();
-        int primeiroRegistroPagina = paaginaAtual * totalRegistrosPogPagina;
-
-        query.setFirstResult(primeiroRegistroPagina);
-        query.setMaxResults(totalRegistrosPogPagina);
-
-    }
-
-
 }

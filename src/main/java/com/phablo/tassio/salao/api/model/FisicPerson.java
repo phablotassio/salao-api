@@ -24,11 +24,11 @@ public class FisicPerson implements Serializable {
 
     @NotBlank
     @Column(name = "FULL_NAME")
-    @Size(max =  100)
+    @Size(max = 100)
     private String fullName;
 
     @Column(name = "NICK_NAME")
-    @Size(max =  30)
+    @Size(max = 30)
     private String nickName;
 
     @Column(name = "SEX_TYPE")

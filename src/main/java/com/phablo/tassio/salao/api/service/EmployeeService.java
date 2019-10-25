@@ -1,6 +1,8 @@
 package com.phablo.tassio.salao.api.service;
 
 import com.phablo.tassio.salao.api.model.Employee;
+import com.phablo.tassio.salao.api.model.FisicPerson;
+import com.phablo.tassio.salao.api.model.JuridicalPerson;
 import com.phablo.tassio.salao.api.model.Person;
 import com.phablo.tassio.salao.api.model.dto.EmployeeRequestDTO;
 import com.phablo.tassio.salao.api.model.dto.EmployeeResponseDTO;
@@ -34,7 +36,7 @@ public class EmployeeService {
     @Autowired
     private EmployeeMapper personMapper;
 
-    public ResponseEntity<EmployeeResponseDTO> cadastrarPessoa(EmployeeRequestDTO employeeRequestDTO){
+    public ResponseEntity<EmployeeResponseDTO> cadastrarPessoa(EmployeeRequestDTO employeeRequestDTO) {
 
         Employee employeeSaved = employeeRepository.save(resolveEmployee(employeeRequestDTO));
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(employeeSaved.getId()).toUri();
@@ -55,7 +57,7 @@ public class EmployeeService {
     public ResponseEntity<EmployeeResponseDTO> atualizarPEssoa(Long id, Person pessoa) {
 
         Employee employeeSaved = getPessoaPorId(id);
-        BeanUtils.copyProperties(pessoa,employeeSaved, "id");
+        BeanUtils.copyProperties(pessoa, employeeSaved, "id");
 
         return ResponseEntity.ok(personMapper.employeeToEmployeeResponseDto(employeeRepository.save(employeeSaved)));
     }
@@ -67,15 +69,17 @@ public class EmployeeService {
 
     private Employee getPessoaPorId(Long id) {
 
-      return employeeRepository.findById(id).orElseThrow(() -> new EmptyResultDataAccessException("A pessoa procurada não está cadastrada.", 1));
+        return employeeRepository.findById(id).orElseThrow(() -> new EmptyResultDataAccessException("A pessoa procurada não está cadastrada.", 1));
 
     }
 
     private Employee resolveEmployee(EmployeeRequestDTO employeeRequestDTO) {
 
+        JuridicalPerson juridicalPerson = juridicalPersonService.findById(employeeRequestDTO.getIdJuridicalPerson());
         Employee employee = personMapper.employeeRequestDTOToEmployee(employeeRequestDTO);
-        employee.setJuridicalPerson(juridicalPersonService.findById(employeeRequestDTO.getIdJuridicalPerson()));
+        employee.setJuridicalPerson(juridicalPerson);
         employee.setRole(roleService.findById(employeeRequestDTO.getIdRole()));
+        employee.setGroupPerson(juridicalPerson.getGroupPerson());
 
         return employee;
     }

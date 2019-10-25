@@ -2,6 +2,7 @@ package com.phablo.tassio.salao.api.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -20,7 +21,7 @@ public class JuridicalPerson implements Serializable {
 
     @MapsId
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_JURIDICAL_PERSON", foreignKey = @ForeignKey(name = "FK_PERSON_TB_JURIRICAL_PERSON"))
+    @JoinColumn(name = "ID_JURIDICAL_PERSON", foreignKey = @ForeignKey(name = "FK_PERSON_TB_JURIDICAL_PERSON"))
     private Person person;
 
     @Size(max = 100)
@@ -31,6 +32,11 @@ public class JuridicalPerson implements Serializable {
     @Size(max = 100)
     @Column(name = "SOCIAL_REASON")
     private String socialReason;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "ID_GROUP_PERSON", foreignKey = @ForeignKey(name = "FK_GROUP_PERSON_TB_JURIDICAL_PERSON"))
+    private GroupPerson groupPerson;
 
     public Long getId() {
         return id;
@@ -70,6 +76,14 @@ public class JuridicalPerson implements Serializable {
 
     public void setSocialReason(String socialReason) {
         this.socialReason = socialReason;
+    }
+
+    public GroupPerson getGroupPerson() {
+        return groupPerson;
+    }
+
+    public void setGroupPerson(GroupPerson groupPerson) {
+        this.groupPerson = groupPerson;
     }
 
     @Override

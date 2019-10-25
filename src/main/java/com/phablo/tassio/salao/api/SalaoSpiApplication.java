@@ -9,9 +9,9 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 @EnableConfigurationProperties(PessoaMicroServiceApiProperty.class)
 public class SalaoSpiApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SalaoSpiApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(SalaoSpiApplication.class, args);
+    }
 
 }
 

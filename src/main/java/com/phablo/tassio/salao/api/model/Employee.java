@@ -15,6 +15,8 @@ import java.time.LocalDate;
         property = "id")
 public class Employee implements Serializable {
 
+    private static final long serialVersionUID = -2507366873663698375L;
+
     @Id
     private Long id;
 
@@ -40,6 +42,11 @@ public class Employee implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_JURIDICAL_PERSON", foreignKey = @ForeignKey(name = "FK_JURIDICAL_PERSON_TB_EMPLOYEE"))
     private JuridicalPerson juridicalPerson;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "ID_GROUP_PERSON", foreignKey = @ForeignKey(name = "FK_GROUP_PERSON_TB_EMPLOYEE"))
+    private GroupPerson groupPerson;
 
     public Long getId() {
         return id;
@@ -87,6 +94,14 @@ public class Employee implements Serializable {
 
     public void setJuridicalPerson(JuridicalPerson juridicalPerson) {
         this.juridicalPerson = juridicalPerson;
+    }
+
+    public GroupPerson getGroupPerson() {
+        return groupPerson;
+    }
+
+    public void setGroupPerson(GroupPerson groupPerson) {
+        this.groupPerson = groupPerson;
     }
 
     @PrePersist

@@ -43,8 +43,8 @@ public class SalaoApiExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, erros, headers, HttpStatus.BAD_REQUEST, request);
     }
 
-    @ExceptionHandler( {EmptyResultDataAccessException.class })
-    public ResponseEntity<Object> handleEmptyResultDataAccessException (RuntimeException ex, WebRequest request) {
+    @ExceptionHandler({EmptyResultDataAccessException.class})
+    public ResponseEntity<Object> handleEmptyResultDataAccessException(RuntimeException ex, WebRequest request) {
 
         String messageUser = messageSource.getMessage("recurso.nao-encontrado", null, LocaleContextHolder.getLocale());
         String messageDev = ex.toString();
@@ -53,8 +53,8 @@ public class SalaoApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     }
 
-    @ExceptionHandler({ DataIntegrityViolationException.class })
-    public ResponseEntity<Object> handleDataIntegrityViolationException (DataIntegrityViolationException ex, WebRequest request) {
+    @ExceptionHandler({DataIntegrityViolationException.class})
+    public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex, WebRequest request) {
         String messageUser = messageSource.getMessage("operacao-nao-permitida", null, LocaleContextHolder.getLocale());
         String messageDev = ExceptionUtils.getRootCauseMessage(ex);
         List<Erro> erros = Arrays.asList(new Erro(messageUser, messageDev));
@@ -66,12 +66,12 @@ public class SalaoApiExceptionHandler extends ResponseEntityExceptionHandler {
         List<Erro> erros = new ArrayList<>();
 
         for (FieldError fieldError : bindingResult.getFieldErrors()) {
-            String messageUser =  messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
+            String messageUser = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
             String messageDev = fieldError.toString();
             erros.add(new Erro(messageUser, messageDev));
         }
 
-        return  erros;
+        return erros;
     }
 
     public static class Erro {
